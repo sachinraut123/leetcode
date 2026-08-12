@@ -11,23 +11,36 @@
 class Solution {
     public boolean isPalindrome(ListNode head) {
         
-        ArrayList<Integer> ans = new ArrayList<>();
-        ListNode temp = head;
-        while(temp!=null){
-            ans.add(temp.val);
-            temp = temp.next;
+        if(head==null || head.next==null){
+            return true;
         }
-        int left = 0;
-        int right = ans.size()-1;
+        ListNode slow =  head;
+        ListNode fast = head;
 
-        while(left<right){
-            if(ans.get(left)==ans.get(right)){
-                left++;
-                right--;
-            }else{
-                return false;
-            } 
+        while(fast != null && fast.next != null){
+            slow= slow.next;
+            fast= fast.next.next;
         }
-        return true;
+
+        ListNode prev = null;
+        ListNode curr = slow;
+
+        while(curr!=null){
+            ListNode next = curr.next;
+            curr.next = prev;
+            prev = curr;
+            curr = next; 
+        }
+        ListNode first = head;
+        ListNode second = prev;
+
+        while(second!=null){
+            if(first.val!=second.val){
+                return false;
+            }
+            first = first.next;
+            second = second.next;
+        }
+        return true; 
     }
 }
